@@ -1,374 +1,93 @@
 import { useEffect, useState } from "react";
-import { Upload, GraduationCap, Star } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { BookOpen, GraduationCap, Star, Calendar } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 
-interface Book {
-  id: string;
-  title: string;
-  titleArabic: string;
-  author: string;
-  imageUrl?: string;
-  isComplete?: boolean;
-}
-
-interface SubjectCategory {
+interface Subject {
   name: string;
-  nameArabic: string;
-  books: Book[];
-  color: string;
+  nameUz: string;
+  description: string;
+  hours: number;
 }
 
 interface YearData {
   year: number;
   title: string;
-  categories: SubjectCategory[];
+  titleUz: string;
+  subjects: Subject[];
+  color: string;
 }
 
 const madrasaProgram: YearData[] = [
   {
     year: 1,
-    title: "1-kurs - Asosiy fanlar",
-    categories: [
-      {
-        name: "NAHV",
-        nameArabic: "النحو",
-        color: "bg-orange-100",
-        books: [
-          {
-            id: "1",
-            title: "DURUSUN NAHVIYYA - HIFNIYYEK NOGI",
-            titleArabic: "دروس النحوية - حفنية الناجي",
-            author: "Hifni Nasif",
-          },
-          {
-            id: "2", 
-            title: "NAHV TATBIQIY - XOLID ABDULLAZIZ",
-            titleArabic: "النحو التطبيقي - خالد عبد العزيز",
-            author: "Khalid Abdul Aziz",
-            isComplete: true
-          },
-          {
-            id: "3",
-            title: "SHARHU AJRUMIYYA",
-            titleArabic: "شرح الآجرومية",
-            author: "Ibn Ajrum",
-            isComplete: true
-          }
-        ]
-      },
-      {
-        name: "MUTQLA",
-        nameArabic: "المطلقة", 
-        color: "bg-blue-100",
-        books: [
-          {
-            id: "4",
-            title: "SHIFOHIYYA - AHMAD HOJIH MASUDIY",
-            titleArabic: "الشفهية - أحمد حاج مسعودي",
-            author: "Ahmad Haj Masoudi",
-            isComplete: true
-          },
-          {
-            id: "5",
-            title: "MADQOUL QIROAT - SUNNATULLOH BEKPULATOV", 
-            titleArabic: "مدقول القراءة - سنة الله بكپولاتوف",
-            author: "Sunnatulloh Bekpulatov",
-            isComplete: true
-          },
-          {
-            id: "6",
-            title: "QISOS NABIYYIN - ABUL HASAN NADAVIY",
-            titleArabic: "قصص النبيين - أبو الحسن الندوي", 
-            author: "Abul Hasan Nadavi",
-            isComplete: true
-          }
-        ]
-      }
-    ]
+    title: "Foundation Year",
+    titleUz: "1-kurs - Asosiy fanlar",
+    subjects: [
+      { name: "Quran Recitation", nameUz: "Qur'on Qiroati", description: "Proper pronunciation and rules", hours: 120 },
+      { name: "Arabic Grammar", nameUz: "Arab tili grammatikasi", description: "Basic Arabic grammar rules", hours: 80 },
+      { name: "Islamic Beliefs", nameUz: "Islom aqidasi", description: "Fundamental Islamic beliefs", hours: 60 },
+      { name: "Hadith Studies", nameUz: "Hadislar", description: "Introduction to Hadith", hours: 40 },
+      { name: "Islamic History", nameUz: "Islom tarixi", description: "Early Islamic history", hours: 50 }
+    ],
+    color: "from-emerald-400 to-emerald-600"
   },
   {
     year: 2,
-    title: "2-kurs - O'rta bosqich",
-    categories: [
-      {
-        name: "SARF",
-        nameArabic: "الصرف",
-        color: "bg-pink-100", 
-        books: [
-          {
-            id: "7",
-            title: "MUMTOZ SARF DARSLIGI",
-            titleArabic: "ممتاز صرف درسلیگی",
-            author: "Mahmudjon Abdusharipov",
-            isComplete: true
-          }
-        ]
-      },
-      {
-        name: "AQIDA",
-        nameArabic: "العقيدة",
-        color: "bg-yellow-100",
-        books: [
-          {
-            id: "8", 
-            title: "AQIDA ILMIIG KIRISH - TAHOVIY AQIDASI",
-            titleArabic: "عقیدہ علمیگ کریش - طحاوی عقیدہ سی",
-            author: "Imam Tahavi",
-            isComplete: true
-          },
-          {
-            id: "9",
-            title: "BAPUL AHOLIY - USMOH O'SHIVPIQHUL AMBAR",
-            titleArabic: "باب الاهلی - عثمان عشیوہ پیقھول عمبار", 
-            author: "Usman Ashiq",
-            isComplete: true
-          }
-        ]
-      },
-      {
-        name: "SARF",
-        nameArabic: "الصرف",
-        color: "bg-green-100",
-        books: [
-          {
-            id: "10",
-            title: "TASRIFI IZZI - IZZUDDIN ZANGONI",
-            titleArabic: "تصریف عزی - عز الدین زنگونی",
-            author: "Izzuddin Zangoni",
-            isComplete: true
-          }
-        ]
-      },
-      {
-        name: "MUTQLA",
-        nameArabic: "المطلقة",
-        color: "bg-blue-100", 
-        books: [
-          {
-            id: "11",
-            title: "NURUL YAQIN - HUZAIRY",
-            titleArabic: "نور الیقین - خضیری",
-            author: "Khudari Bek",
-            isComplete: true
-          }
-        ]
-      }
-    ]
+    title: "Intermediate Studies",
+    titleUz: "2-kurs - O'rta bosqich",
+    subjects: [
+      { name: "Advanced Quran", nameUz: "Mukammal Qur'on", description: "Tajweed and memorization", hours: 100 },
+      { name: "Fiqh Fundamentals", nameUz: "Fiqh asoslari", description: "Islamic jurisprudence basics", hours: 90 },
+      { name: "Arabic Literature", nameUz: "Arab adabiyoti", description: "Classical Arabic texts", hours: 70 },
+      { name: "Tafseer", nameUz: "Tafsir ilmi", description: "Quranic interpretation", hours: 80 },
+      { name: "Islamic Ethics", nameUz: "Islom axloqi", description: "Moral and ethical teachings", hours: 45 }
+    ],
+    color: "from-blue-400 to-blue-600"
   },
   {
     year: 3,
-    title: "3-kurs - Ilg'or bosqich",
-    categories: [
-      {
-        name: "FIQH",
-        nameArabic: "الفقه",
-        color: "bg-amber-100",
-        books: [
-          {
-            id: "12",
-            title: "QUDURIY MUXTASARI IMOM QUDURIY",
-            titleArabic: "قدوری مختصری امام قدوری",
-            author: "Imam Quduri",
-            isComplete: true
-          },
-          {
-            id: "13", 
-            title: "MAROQI FALOH - HASAN SHURUNBULOVIY",
-            titleArabic: "مراقی فلاح - حسن شورنبولوی",
-            author: "Hasan Shurunbulavi", 
-            isComplete: true
-          }
-        ]
-      },
-      {
-        name: "HADIS",
-        nameArabic: "الحديث",
-        color: "bg-cyan-100",
-        books: [
-          {
-            id: "14",
-            title: "TAVSIRUL VUSUL",
-            titleArabic: "تیسیر الوصول",
-            author: "Abdul Rahman", 
-            isComplete: true
-          },
-          {
-            id: "15",
-            title: "TAVSIRUL VUSUL", 
-            titleArabic: "تیسیر الوصول",
-            author: "Abdul Rahman",
-            isComplete: true
-          }
-        ]
-      },
-      {
-        name: "USUL FIQH",
-        nameArabic: "أصول الفقه", 
-        color: "bg-pink-100",
-        books: [
-          {
-            id: "16",
-            title: "MABODIUL USUL - AHMAD BOLANBURIY",
-            titleArabic: "مبادی الاصول - احمد بولان بوری",
-            author: "Ahmad Bolanbu",
-            isComplete: true
-          },
-          {
-            id: "17",
-            title: "AL-MUYASSAR FIY USUUL - FIQH - IBROHIM SILQINIY",
-            titleArabic: "المیسر فی اصول - فقہ - ابراہیم سلقینی", 
-            author: "Ibrahim Silqini",
-            isComplete: true
-          }
-        ]
-      }
-    ]
+    title: "Advanced Studies",
+    titleUz: "3-kurs - Ilg'or bosqich",
+    subjects: [
+      { name: "Advanced Fiqh", nameUz: "Mukammal Fiqh", description: "Complex jurisprudential issues", hours: 110 },
+      { name: "Hadith Science", nameUz: "Hadis ilmi", description: "Hadith methodology", hours: 85 },
+      { name: "Islamic Philosophy", nameUz: "Islom falsafasi", description: "Islamic philosophical thought", hours: 60 },
+      { name: "Advanced Tafseer", nameUz: "Mukammal Tafsir", description: "In-depth Quranic commentary", hours: 95 },
+      { name: "Comparative Religion", nameUz: "Dinlar tarixи", description: "Study of world religions", hours: 55 }
+    ],
+    color: "from-purple-400 to-purple-600"
   },
   {
     year: 4,
-    title: "4-kurs - Ixtisoslashtirish", 
-    categories: [
-      {
-        name: "MANTIQ",
-        nameArabic: "المنطق",
-        color: "bg-blue-100",
-        books: [
-          {
-            id: "18",
-            title: "MULAXXAS FIL MANTIQ - KOZIBJON IBROHIM",
-            titleArabic: "ملخص فی المنطق - قاضی جون ابراہیم",
-            author: "Qozijan Ibrahim",
-            isComplete: true
-          },
-          {
-            id: "19", 
-            title: "SUCRO FIL MANTIQ - SAYYID SHARIF JURFONY",
-            titleArabic: "صغرو فی المنطق - سید شریف جرگونی",
-            author: "Sayyid Sharif Jurjani",
-            isComplete: true
-          }
-        ]
-      },
-      {
-        name: "MUSTVLA HUL HADIS", 
-        nameArabic: "مصطلح الحديث",
-        color: "bg-orange-100",
-        books: [
-          {
-            id: "20",
-            title: "TAVZHU ILMIL-MUSTLAH MAAT - TASHIYYH (Mujiyiddin Awroma)",
-            titleArabic: "توضیح علم المصطلح مات - تشییح (مجی الدین اورما)",
-            author: "Mujiyiddin Awroma",
-            isComplete: true
-          },
-          {
-            id: "21",
-            title: "AN-NUKATUL-MADINIYYA BI-SHARHIL-BAYQUNIYYA", 
-            titleArabic: "النکات المدینیة بشرح البیقونیة",
-            author: "Al-Bayquni",
-            isComplete: true
-          }
-        ]
-      },
-      {
-        name: "NAHV",
-        nameArabic: "النحو",
-        color: "bg-green-100", 
-        books: [
-          {
-            id: "22",
-            title: "KOFIYA - IBN HOJIB",
-            titleArabic: "کافیة - ابن حاجب",
-            author: "Ibn Hajib",
-            isComplete: true
-          },
-          {
-            id: "23",
-            title: "TAVZIHU QOTRIN-NADO - ABDUL-KARIM DAIRBON",
-            titleArabic: "توضیح قطر الندی - عبد الکریم دیربون", 
-            author: "Abdul Karim Dairbon",
-            isComplete: true
-          }
-        ]
-      }
-    ]
+    title: "Specialization",
+    titleUz: "4-kurs - Ixtisoslashtirish",
+    subjects: [
+      { name: "Teaching Methodology", nameUz: "Ta'lim metodikasi", description: "Islamic teaching methods", hours: 75 },
+      { name: "Contemporary Issues", nameUz: "Zamonaviy masalalar", description: "Modern Islamic challenges", hours: 65 },
+      { name: "Research Methods", nameUz: "Tadqiqot usullari", description: "Academic research skills", hours: 50 },
+      { name: "Community Leadership", nameUz: "Jamiyat rahbariyati", description: "Leading Muslim communities", hours: 60 },
+      { name: "Islamic Economics", nameUz: "Islom iqtisodi", description: "Islamic financial principles", hours: 55 }
+    ],
+    color: "from-amber-400 to-amber-600"
   },
   {
     year: 5,
-    title: "5-kurs - Mukammallik va xizmat",
-    categories: [
-      {
-        name: "MUTQLA",
-        nameArabic: "المطلقة",
-        color: "bg-amber-100", 
-        books: [
-          {
-            id: "24",
-            title: "AL-MUKTAR MIN FARAIDIN - NUQULI VAL-ASBOR",
-            titleArabic: "المختار من فرائد - نقولی والاسبور", 
-            author: "Nuquli Val-Asbor",
-            isComplete: true
-          },
-          {
-            id: "25",
-            title: "AT-TADBIR ALA ISTIQAMIL-BAROMILIS - MUKADDIMAS",
-            titleArabic: "التدبیر علی استقامة البرومیلس - مقدمس",
-            author: "Al-Mukaddimas",
-            isComplete: true
-          }
-        ]
-      },
-      {
-        name: "HIKMAT",
-        nameArabic: "الحكمة", 
-        color: "bg-blue-100",
-        books: [
-          {
-            id: "26",
-            title: "MABADIUL HIKMAT - AHMAD BOLANBURIY",
-            titleArabic: "مبادی الحکمة - احمد بولان بوری",
-            author: "Ahmad Bolanburiy",
-            isComplete: true
-          },
-          {
-            id: "27",
-            title: "TASAWUROT AVVALIYYA - HASANAYN MAKLUF",
-            titleArabic: "تصاورات اولیة - حسنین مکلوف",
-            author: "Hasanayn Makluf", 
-            isComplete: true
-          }
-        ]
-      },
-      {
-        name: "AQIDA",
-        nameArabic: "العقيدة",
-        color: "bg-pink-100",
-        books: [
-          {
-            id: "28", 
-            title: "TAMHID - ABU SANO LOMISHIY",
-            titleArabic: "تمهید - ابو سنو لومیشی",
-            author: "Abu Sano Lomishi",
-            isComplete: true
-          },
-          {
-            id: "29",
-            title: "IQTISOR FIL I'TIQOD - IMOM GAZZOLIY",
-            titleArabic: "اقتصار فی الاعتقاد - امام غزالی",
-            author: "Imam Ghazali",
-            isComplete: true
-          }
-        ]
-      }
-    ]
+    title: "Mastery & Service",
+    titleUz: "5-kurs - Mukammallik va xizmat",
+    subjects: [
+      { name: "Advanced Research", nameUz: "Ilmiy tadqiqot", description: "Independent research project", hours: 100 },
+      { name: "Practical Training", nameUz: "Amaliy mashg'ulot", description: "Real-world application", hours: 80 },
+      { name: "Thesis Writing", nameUz: "Dissertatsiya yozish", description: "Final academic project", hours: 120 },
+      { name: "Community Service", nameUz: "Jamiyat xizmati", description: "Serving the community", hours: 70 },
+      { name: "Graduation Prep", nameUz: "Bitiruv tayyorligi", description: "Final examinations", hours: 45 }
+    ],
+    color: "from-rose-400 to-rose-600"
   }
 ];
 
 const MadrasaRoadmap = () => {
   const [visibleYears, setVisibleYears] = useState<number[]>([]);
-  const [selectedBooks, setSelectedBooks] = useState<{[key: string]: File}>({});
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -382,20 +101,6 @@ const MadrasaRoadmap = () => {
 
     return () => clearInterval(timer);
   }, []);
-
-  const handleImageUpload = (bookId: string, file: File) => {
-    setSelectedBooks(prev => ({
-      ...prev,
-      [bookId]: file
-    }));
-  };
-
-  const getImageUrl = (bookId: string) => {
-    if (selectedBooks[bookId]) {
-      return URL.createObjectURL(selectedBooks[bookId]);
-    }
-    return undefined;
-  };
 
   return (
     <div className="min-h-screen bg-gradient-bg">
@@ -415,125 +120,115 @@ const MadrasaRoadmap = () => {
         </div>
       </div>
 
-      {/* Years Layout */}
+      {/* Timeline */}
       <div className="container mx-auto px-4 py-16">
-        <div className="space-y-24">
-          {madrasaProgram.map((yearData, yearIndex) => (
-            <div 
-              key={yearData.year}
-              className={`${
-                visibleYears.includes(yearData.year) ? 'animate-fade-in' : 'opacity-0'
-              }`}
-            >
-              {/* Year Header */}
-              <div className="text-center mb-12">
-                <Badge variant="outline" className="text-2xl px-6 py-3 mb-4">
-                  {yearData.year}-KURS
-                </Badge>
-                <h2 className="text-3xl font-bold text-primary">
-                  {yearData.title}
-                </h2>
-              </div>
-
-              {/* Categories Grid */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                {yearData.categories.map((category, categoryIndex) => (
-                  <div 
-                    key={category.name}
-                    className={`${
-                      yearIndex % 2 === 0 
-                        ? categoryIndex % 2 === 0 ? 'lg:justify-self-end' : 'lg:justify-self-start'
-                        : categoryIndex % 2 === 0 ? 'lg:justify-self-start' : 'lg:justify-self-end'
-                    }`}
-                  >
-                    {/* Category Header */}
-                    <div className="mb-6">
-                      <div className={`inline-block ${category.color} px-4 py-2 rounded-t-lg border-l-4 border-primary`}>
-                        <h3 className="text-xl font-bold text-primary">
-                          {category.name}
-                        </h3>
-                        <p className="text-sm text-muted-foreground">
-                          {category.nameArabic}
-                        </p>
+        <div className="relative">
+          {/* Central Timeline Line */}
+          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-primary rounded-full opacity-30"></div>
+          
+          {/* Timeline Items */}
+          <div className="space-y-16">
+            {madrasaProgram.map((yearData, index) => (
+              <div 
+                key={yearData.year}
+                className={`relative ${
+                  index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
+                } flex flex-col md:flex items-center gap-8`}
+              >
+                {/* Year Card */}
+                <div className={`w-full md:w-5/12 ${
+                  visibleYears.includes(yearData.year) 
+                    ? index % 2 === 0 
+                      ? 'animate-slide-in-right' 
+                      : 'animate-slide-in-left'
+                    : 'opacity-0'
+                }`}>
+                  <Card className="shadow-elegant hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-primary/20">
+                    <CardHeader className={`bg-gradient-to-r ${yearData.color} text-white rounded-t-lg`}>
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="text-2xl font-bold">
+                          {yearData.titleUz}
+                        </CardTitle>
+                        <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
+                          {yearData.year}-kurs
+                        </Badge>
                       </div>
-                    </div>
-
-                    {/* Books Grid */}
-                    <div className="space-y-4">
-                      {category.books.map((book, bookIndex) => (
-                        <Card 
-                          key={book.id}
-                          className={`shadow-elegant hover:shadow-xl transition-all duration-300 ${
-                            visibleYears.includes(yearData.year) ? 'animate-slide-in-right' : 'opacity-0'
-                          }`}
-                          style={{ animationDelay: `${bookIndex * 0.2}s` }}
-                        >
-                          <CardContent className="p-6">
-                            <div className="flex items-start gap-4">
-                              {/* Book Cover Upload Area */}
-                              <div className="relative group">
-                                <div className="w-24 h-32 rounded-lg overflow-hidden bg-muted border-2 border-dashed border-muted-foreground/30 hover:border-primary/50 transition-colors">
-                                  {getImageUrl(book.id) ? (
-                                    <img 
-                                      src={getImageUrl(book.id)} 
-                                      alt={book.title}
-                                      className="w-full h-full object-cover"
-                                    />
-                                  ) : (
-                                    <div className="w-full h-full flex items-center justify-center">
-                                      <Upload className="h-8 w-8 text-muted-foreground group-hover:text-primary transition-colors" />
-                                    </div>
-                                  )}
-                                </div>
-                                <input
-                                  type="file"
-                                  accept="image/*"
-                                  className="absolute inset-0 opacity-0 cursor-pointer"
-                                  onChange={(e) => {
-                                    const file = e.target.files?.[0];
-                                    if (file) {
-                                      handleImageUpload(book.id, file);
-                                    }
-                                  }}
-                                />
-                                {book.isComplete && (
-                                  <Badge className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs">
-                                    TOLIQ
-                                  </Badge>
-                                )}
-                              </div>
-
-                              {/* Book Details */}
-                              <div className="flex-1 min-w-0">
-                                <h4 className="font-bold text-card-foreground text-lg mb-2">
-                                  {book.title}
-                                </h4>
-                                <p className="text-sm text-muted-foreground mb-1 font-arabic">
-                                  {book.titleArabic}
-                                </p>
-                                <p className="text-sm text-accent font-medium">
-                                  {book.author}
-                                </p>
+                    </CardHeader>
+                    <CardContent className="p-6 bg-card">
+                      <div className="space-y-4">
+                        {yearData.subjects.map((subject, subjectIndex) => (
+                          <div 
+                            key={subject.name}
+                            className={`flex items-start gap-3 p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors duration-200 ${
+                              visibleYears.includes(yearData.year) ? 'animate-fade-in' : 'opacity-0'
+                            }`}
+                            style={{ animationDelay: `${subjectIndex * 0.1}s` }}
+                          >
+                            <BookOpen className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-semibold text-card-foreground">
+                                {subject.nameUz}
+                              </h4>
+                              <p className="text-sm text-muted-foreground">
+                                {subject.description}
+                              </p>
+                              <div className="flex items-center gap-2 mt-2">
+                                <Calendar className="h-4 w-4 text-accent" />
+                                <span className="text-sm font-medium text-accent">
+                                  {subject.hours} soat
+                                </span>
                               </div>
                             </div>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
 
-              {/* Year Divider */}
-              {yearIndex < madrasaProgram.length - 1 && (
-                <div className="mt-16 flex items-center justify-center">
-                  <div className="w-16 h-16 rounded-full bg-gradient-primary shadow-elegant flex items-center justify-center border-4 border-background">
+                {/* Timeline Node */}
+                <div className={`relative z-10 ${
+                  visibleYears.includes(yearData.year) ? 'animate-scale-in' : 'opacity-0'
+                }`}>
+                  <div className={`w-16 h-16 rounded-full bg-gradient-to-r ${yearData.color} shadow-elegant flex items-center justify-center border-4 border-background`}>
                     <Star className="h-8 w-8 text-white" />
                   </div>
+                  <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
+                    <Badge variant="outline" className="bg-background">
+                      {yearData.year}-kurs
+                    </Badge>
+                  </div>
                 </div>
+
+                {/* Empty space for alternating layout */}
+                <div className="w-full md:w-5/12 hidden md:block"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Summary Stats */}
+        <div className={`mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 ${
+          visibleYears.length === madrasaProgram.length ? 'animate-fade-in' : 'opacity-0'
+        }`}>
+          <Card className="text-center p-6 bg-gradient-primary text-primary-foreground">
+            <h3 className="text-3xl font-bold mb-2">5</h3>
+            <p className="text-lg">Yil davomiyligi</p>
+          </Card>
+          <Card className="text-center p-6 bg-gradient-accent text-accent-foreground">
+            <h3 className="text-3xl font-bold mb-2">
+              {madrasaProgram.reduce((total, year) => total + year.subjects.length, 0)}
+            </h3>
+            <p className="text-lg">Umumiy fanlar soni</p>
+          </Card>
+          <Card className="text-center p-6 bg-card border-2 border-primary/20">
+            <h3 className="text-3xl font-bold mb-2 text-primary">
+              {madrasaProgram.reduce((total, year) => 
+                total + year.subjects.reduce((yearTotal, subject) => yearTotal + subject.hours, 0), 0
               )}
-            </div>
-          ))}
+            </h3>
+            <p className="text-lg text-card-foreground">Umumiy soat</p>
+          </Card>
         </div>
       </div>
     </div>
