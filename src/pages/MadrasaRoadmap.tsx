@@ -1,90 +1,300 @@
 import { useEffect, useState } from "react";
-import { BookOpen, GraduationCap, Star, Calendar } from "lucide-react";
+import { BookOpen, GraduationCap, Star, Upload, Image } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
-interface Subject {
+interface Book {
+  id: string;
+  title: string;
+  author?: string;
+  image?: string;
+}
+
+interface Category {
   name: string;
   nameUz: string;
-  description: string;
-  hours: number;
+  books: Book[];
+  bgColor: string;
 }
 
 interface YearData {
   year: number;
   title: string;
   titleUz: string;
-  subjects: Subject[];
-  color: string;
+  categories: Category[];
 }
 
 const madrasaProgram: YearData[] = [
   {
     year: 1,
-    title: "Foundation Year",
-    titleUz: "1-kurs - Asosiy fanlar",
-    subjects: [
-      { name: "Quran Recitation", nameUz: "Qur'on Qiroati", description: "Proper pronunciation and rules", hours: 120 },
-      { name: "Arabic Grammar", nameUz: "Arab tili grammatikasi", description: "Basic Arabic grammar rules", hours: 80 },
-      { name: "Islamic Beliefs", nameUz: "Islom aqidasi", description: "Fundamental Islamic beliefs", hours: 60 },
-      { name: "Hadith Studies", nameUz: "Hadislar", description: "Introduction to Hadith", hours: 40 },
-      { name: "Islamic History", nameUz: "Islom tarixi", description: "Early Islamic history", hours: 50 }
-    ],
-    color: "from-emerald-400 to-emerald-600"
+    title: "1-KURS",
+    titleUz: "1-KURS",
+    categories: [
+      {
+        name: "NAHV",
+        nameUz: "NAHV",
+        bgColor: "bg-orange-100",
+        books: [
+          { id: "nahv1", title: "DURUSUN NAHVIYYA - HIFNIYBEK NOSI" },
+          { id: "nahv2", title: "NAHV TATBIQOV - XOLID ABDULAZIZ" },
+          { id: "nahv3", title: "SHARHU AJRUMIYYA" }
+        ]
+      },
+      {
+        name: "MUTOLAA",
+        nameUz: "KUTOLAA",
+        bgColor: "bg-blue-100",
+        books: [
+          { id: "kutolaa1", title: "SHIFOHIYYA - AHMAD HODIY MAQSUDIY" },
+          { id: "kutolaa2", title: "MARDAVIK QIROAT - SUNNATULLOH BEKPOLAT" },
+          { id: "kutolaa3", title: "QISOS NABIYYIN - ABUL HASAN NADAVIY" }
+        ]
+      },
+      {
+        name: "SARF",
+        nameUz: "SARF",
+        bgColor: "bg-pink-100",
+        books: [
+          { id: "sarf1", title: "MUMTOZ SARF DARSLIGI - MAMURJON ABDUSHARIPOV" }
+        ]
+      }
+    ]
   },
   {
     year: 2,
-    title: "Intermediate Studies",
-    titleUz: "2-kurs - O'rta bosqich",
-    subjects: [
-      { name: "Advanced Quran", nameUz: "Mukammal Qur'on", description: "Tajweed and memorization", hours: 100 },
-      { name: "Fiqh Fundamentals", nameUz: "Fiqh asoslari", description: "Islamic jurisprudence basics", hours: 90 },
-      { name: "Arabic Literature", nameUz: "Arab adabiyoti", description: "Classical Arabic texts", hours: 70 },
-      { name: "Tafseer", nameUz: "Tafsir ilmi", description: "Quranic interpretation", hours: 80 },
-      { name: "Islamic Ethics", nameUz: "Islom axloqi", description: "Moral and ethical teachings", hours: 45 }
-    ],
-    color: "from-blue-400 to-blue-600"
+    title: "2-KURS",
+    titleUz: "2-KURS",
+    categories: [
+      {
+        name: "FIQH",
+        nameUz: "FIQH",
+        bgColor: "bg-orange-100",
+        books: [
+          { id: "fiqh1", title: "Fiqhul Muyassar - Muhammad Ali Nadaviy" },
+          { id: "fiqh2", title: "QUDURIY MUXTASARI INOM QUDURIY" }
+        ]
+      },
+      {
+        name: "HADIS",
+        nameUz: "HADIS",
+        bgColor: "bg-blue-100",
+        books: [
+          { id: "hadis1", title: "ARBAYIN NAVAVIYYA - INOM NAVAVIY" },
+          { id: "hadis2", title: "RIYOZUS SOLIHIN - INOM NAVAVIY" }
+        ]
+      },
+      {
+        name: "NAHV",
+        nameUz: "NAHV",
+        bgColor: "bg-pink-100",
+        books: [
+          { id: "nahv4", title: "UNMUZAJ - INOM ZAMAXSHARIY" },
+          { id: "nahv5", title: "HIDOYATU NAHV - BUSHRO" }
+        ]
+      }
+    ]
   },
   {
     year: 3,
-    title: "Advanced Studies",
-    titleUz: "3-kurs - Ilg'or bosqich",
-    subjects: [
-      { name: "Advanced Fiqh", nameUz: "Mukammal Fiqh", description: "Complex jurisprudential issues", hours: 110 },
-      { name: "Hadith Science", nameUz: "Hadis ilmi", description: "Hadith methodology", hours: 85 },
-      { name: "Islamic Philosophy", nameUz: "Islom falsafasi", description: "Islamic philosophical thought", hours: 60 },
-      { name: "Advanced Tafseer", nameUz: "Mukammal Tafsir", description: "In-depth Quranic commentary", hours: 95 },
-      { name: "Comparative Religion", nameUz: "Dinlar tarixи", description: "Study of world religions", hours: 55 }
-    ],
-    color: "from-purple-400 to-purple-600"
+    title: "3-KURS",
+    titleUz: "3-KURS",
+    categories: [
+      {
+        name: "FIQH",
+        nameUz: "FIQH",
+        bgColor: "bg-orange-100",
+        books: [
+          { id: "fiqh3", title: "QUDURIY MUXTASARI INOM QUDURIY" },
+          { id: "fiqh4", title: "MAROQI FALOH HASAN SHURUNBULOLIY" }
+        ]
+      },
+      {
+        name: "HADIS",
+        nameUz: "HADIS",
+        bgColor: "bg-blue-100",
+        books: [
+          { id: "hadis3", title: "TAYSIRUL VUSUL" },
+          { id: "hadis4", title: "TAYSIRUL-VUSUL" }
+        ]
+      },
+      {
+        name: "USULUL FIQH",
+        nameUz: "USULUL FIQH",
+        bgColor: "bg-pink-100",
+        books: [
+          { id: "usul1", title: "MABODIUL USUL - AHMAD BOLANBHURIY" },
+          { id: "usul2", title: "AL-MUYASSAR FIY USULIL-FIQH - IBROHIM SILQINIY" }
+        ]
+      }
+    ]
   },
   {
     year: 4,
-    title: "Specialization",
-    titleUz: "4-kurs - Ixtisoslashtirish",
-    subjects: [
-      { name: "Teaching Methodology", nameUz: "Ta'lim metodikasi", description: "Islamic teaching methods", hours: 75 },
-      { name: "Contemporary Issues", nameUz: "Zamonaviy masalalar", description: "Modern Islamic challenges", hours: 65 },
-      { name: "Research Methods", nameUz: "Tadqiqot usullari", description: "Academic research skills", hours: 50 },
-      { name: "Community Leadership", nameUz: "Jamiyat rahbariyati", description: "Leading Muslim communities", hours: 60 },
-      { name: "Islamic Economics", nameUz: "Islom iqtisodi", description: "Islamic financial principles", hours: 55 }
-    ],
-    color: "from-amber-400 to-amber-600"
+    title: "4-KURS",
+    titleUz: "4-KURS",
+    categories: [
+      {
+        name: "MUSTALA HUL HADIS",
+        nameUz: "MUSTALA HUL HADIS",
+        bgColor: "bg-orange-100",
+        books: [
+          { id: "mustala1", title: "MUXTOROT MINAL-ADABIL-ARABIY" },
+          { id: "mustala2", title: "MIRQOT FIL MANTIQ - FAZL XAYROBODIY" }
+        ]
+      },
+      {
+        name: "MANTIQ",
+        nameUz: "MANTIQ",
+        bgColor: "bg-blue-100",
+        books: [
+          { id: "mantiq1", title: "MUXTOSOT MINAL-ADABIL-ARABIY" },
+          { id: "mantiq2", title: "SHARHI MULLA - MULLA JOMIY" }
+        ]
+      },
+      {
+        name: "HIIKMAT",
+        nameUz: "HIKMAT",
+        bgColor: "bg-blue-100",
+        books: [
+          { id: "hikmat1", title: "AQIBUL DANS VAL MUNZARA - MUHYIDDIN ABDULHAMID" },
+          { id: "hikmat2", title: "XULOSATI ILMIY VAZ - YUSUF DINIY" }
+        ]
+      }
+    ]
   },
   {
     year: 5,
-    title: "Mastery & Service",
-    titleUz: "5-kurs - Mukammallik va xizmat",
-    subjects: [
-      { name: "Advanced Research", nameUz: "Ilmiy tadqiqot", description: "Independent research project", hours: 100 },
-      { name: "Practical Training", nameUz: "Amaliy mashg'ulot", description: "Real-world application", hours: 80 },
-      { name: "Thesis Writing", nameUz: "Dissertatsiya yozish", description: "Final academic project", hours: 120 },
-      { name: "Community Service", nameUz: "Jamiyat xizmati", description: "Serving the community", hours: 70 },
-      { name: "Graduation Prep", nameUz: "Bitiruv tayyorligi", description: "Final examinations", hours: 45 }
-    ],
-    color: "from-rose-400 to-rose-600"
+    title: "5-KURS",
+    titleUz: "5-KURS",
+    categories: [
+      {
+        name: "MUSTALA HUL HADIS",
+        nameUz: "MUSTALA HUL HADIS",
+        bgColor: "bg-orange-100",
+        books: [
+          { id: "mustala3", title: "AL-MASALILUL-USULIYYA FIL HAQIQIYYA WASH SHARIYYA" },
+          { id: "mustala4", title: "SHARHJUL VIQOYA - SODRUSH SHARIYA" }
+        ]
+      },
+      {
+        name: "HADIS",
+        nameUz: "HADIS",
+        bgColor: "bg-blue-100",
+        books: [
+          { id: "hadis5", title: "MUXTOROT MINAL-MIRQOT" },
+          { id: "hadis6", title: "AR-RUDUD ALASH-SHUBUHOT" }
+        ]
+      },
+      {
+        name: "USULUL FIQH",
+        nameUz: "USULUL FIQH",
+        bgColor: "bg-pink-100",
+        books: [
+          { id: "usul3", title: "NURUL ANVOR - MULLA JIYJON" }
+        ]
+      },
+      {
+        name: "MANTIQ",
+        nameUz: "MANTIQ",
+        bgColor: "bg-blue-100",
+        books: [
+          { id: "mantiq3", title: "ABDULLA YAZIDIY TAHZIB MANTHQA SHARHI ABDULLAHI YAZIDIY" }
+        ]
+      }
+    ]
   }
 ];
+
+const BookCard = ({ book, categoryColor }: { book: Book; categoryColor: string }) => {
+  const [image, setImage] = useState<string | null>(book.image || null);
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImage(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  return (
+    <div className={`relative p-4 rounded-lg ${categoryColor} min-h-[200px] flex flex-col`}>
+      <div className="flex-1">
+        {image ? (
+          <div className="relative mb-3">
+            <img 
+              src={image} 
+              alt={book.title} 
+              className="w-full h-32 object-cover rounded-md shadow-md"
+            />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="absolute inset-0 opacity-0 cursor-pointer"
+            />
+          </div>
+        ) : (
+          <div className="mb-3 h-32 bg-white/50 rounded-md border-2 border-dashed border-gray-300 flex items-center justify-center cursor-pointer relative">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="absolute inset-0 opacity-0 cursor-pointer"
+            />
+            <div className="text-center">
+              <Upload className="mx-auto h-8 w-8 text-gray-400 mb-2" />
+              <p className="text-sm text-gray-500">Kitob rasmini yuklang</p>
+            </div>
+          </div>
+        )}
+        
+        <h4 className="font-bold text-sm text-gray-800 leading-tight">
+          {book.title}
+        </h4>
+        {book.author && (
+          <p className="text-xs text-gray-600 mt-1">{book.author}</p>
+        )}
+      </div>
+      
+      {/* TOLIQ Badge */}
+      <div className="absolute top-2 right-2">
+        <div className="bg-orange-600 text-white px-2 py-1 rounded-md transform rotate-45 text-xs font-bold">
+          TOLIQ
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const CategorySection = ({ category }: { category: Category }) => {
+  return (
+    <div className="mb-8">
+      {/* Category Header */}
+      <div className="flex items-center mb-4">
+        <div className={`${category.bgColor} px-4 py-2 rounded-lg`}>
+          <h3 className="font-bold text-lg text-gray-800 transform -rotate-90 origin-center whitespace-nowrap">
+            {category.nameUz}
+          </h3>
+        </div>
+      </div>
+      
+      {/* Books Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ml-8">
+        {category.books.map((book) => (
+          <BookCard 
+            key={book.id} 
+            book={book} 
+            categoryColor={category.bgColor}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const MadrasaRoadmap = () => {
   const [visibleYears, setVisibleYears] = useState<number[]>([]);
@@ -133,7 +343,7 @@ const MadrasaRoadmap = () => {
                 key={yearData.year}
                 className={`relative ${
                   index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-                } flex flex-col md:flex items-center gap-8`}
+                } flex flex-col md:flex items-start gap-8`}
               >
                 {/* Year Card */}
                 <div className={`w-full md:w-5/12 ${
@@ -144,7 +354,7 @@ const MadrasaRoadmap = () => {
                     : 'opacity-0'
                 }`}>
                   <Card className="shadow-elegant hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-primary/20">
-                    <CardHeader className={`bg-gradient-to-r ${yearData.color} text-white rounded-t-lg`}>
+                    <CardHeader className="bg-gradient-to-r from-orange-400 to-orange-600 text-white rounded-t-lg">
                       <div className="flex items-center justify-between">
                         <CardTitle className="text-2xl font-bold">
                           {yearData.titleUz}
@@ -155,33 +365,12 @@ const MadrasaRoadmap = () => {
                       </div>
                     </CardHeader>
                     <CardContent className="p-6 bg-card">
-                      <div className="space-y-4">
-                        {yearData.subjects.map((subject, subjectIndex) => (
-                          <div 
-                            key={subject.name}
-                            className={`flex items-start gap-3 p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors duration-200 ${
-                              visibleYears.includes(yearData.year) ? 'animate-fade-in' : 'opacity-0'
-                            }`}
-                            style={{ animationDelay: `${subjectIndex * 0.1}s` }}
-                          >
-                            <BookOpen className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
-                            <div className="flex-1 min-w-0">
-                              <h4 className="font-semibold text-card-foreground">
-                                {subject.nameUz}
-                              </h4>
-                              <p className="text-sm text-muted-foreground">
-                                {subject.description}
-                              </p>
-                              <div className="flex items-center gap-2 mt-2">
-                                <Calendar className="h-4 w-4 text-accent" />
-                                <span className="text-sm font-medium text-accent">
-                                  {subject.hours} soat
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
+                      {yearData.categories.map((category) => (
+                        <CategorySection 
+                          key={category.name} 
+                          category={category}
+                        />
+                      ))}
                     </CardContent>
                   </Card>
                 </div>
@@ -190,7 +379,7 @@ const MadrasaRoadmap = () => {
                 <div className={`relative z-10 ${
                   visibleYears.includes(yearData.year) ? 'animate-scale-in' : 'opacity-0'
                 }`}>
-                  <div className={`w-16 h-16 rounded-full bg-gradient-to-r ${yearData.color} shadow-elegant flex items-center justify-center border-4 border-background`}>
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-r from-orange-400 to-orange-600 shadow-elegant flex items-center justify-center border-4 border-background">
                     <Star className="h-8 w-8 text-white" />
                   </div>
                   <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
@@ -217,17 +406,17 @@ const MadrasaRoadmap = () => {
           </Card>
           <Card className="text-center p-6 bg-gradient-accent text-accent-foreground">
             <h3 className="text-3xl font-bold mb-2">
-              {madrasaProgram.reduce((total, year) => total + year.subjects.length, 0)}
+              {madrasaProgram.reduce((total, year) => 
+                total + year.categories.reduce((catTotal, cat) => catTotal + cat.books.length, 0), 0
+              )}
             </h3>
-            <p className="text-lg">Umumiy fanlar soni</p>
+            <p className="text-lg">Umumiy kitoblar soni</p>
           </Card>
           <Card className="text-center p-6 bg-card border-2 border-primary/20">
             <h3 className="text-3xl font-bold mb-2 text-primary">
-              {madrasaProgram.reduce((total, year) => 
-                total + year.subjects.reduce((yearTotal, subject) => yearTotal + subject.hours, 0), 0
-              )}
+              {madrasaProgram.reduce((total, year) => total + year.categories.length, 0)}
             </h3>
-            <p className="text-lg text-card-foreground">Umumiy soat</p>
+            <p className="text-lg text-card-foreground">Umumiy kategoriyalar</p>
           </Card>
         </div>
       </div>
