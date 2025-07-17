@@ -207,61 +207,42 @@ const madrasaProgram: YearData[] = [
 ];
 
 const BookCard = ({ book, categoryColor }: { book: Book; categoryColor: string }) => {
-  const [image, setImage] = useState<string | null>(book.image || null);
-
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setImage(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  // Placeholder images for books
+  const placeholderImages = [
+    "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400",
+    "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=400", 
+    "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400",
+    "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400",
+    "https://images.unsplash.com/photo-1519682337058-a94d519337bc?w=400"
+  ];
+  
+  const randomImage = placeholderImages[Math.floor(Math.random() * placeholderImages.length)];
 
   return (
-    <div className={`relative p-4 rounded-lg ${categoryColor} min-h-[200px] flex flex-col`}>
-      <div className="flex-1">
-        {image ? (
-          <div className="relative mb-3">
-            <img 
-              src={image} 
-              alt={book.title} 
-              className="w-full h-32 object-cover rounded-md shadow-md"
-            />
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className="absolute inset-0 opacity-0 cursor-pointer"
-            />
-          </div>
-        ) : (
-          <div className="mb-3 h-32 bg-white/50 rounded-md border-2 border-dashed border-gray-300 flex items-center justify-center cursor-pointer relative">
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className="absolute inset-0 opacity-0 cursor-pointer"
-            />
-            <div className="text-center">
-              <Upload className="mx-auto h-8 w-8 text-gray-400 mb-2" />
-              <p className="text-sm text-gray-500">Kitob rasmini yuklang</p>
-            </div>
-          </div>
-        )}
-        
-        <h4 className="font-bold text-sm text-gray-800 leading-tight">
+    <div className={`relative rounded-lg ${categoryColor} min-h-[280px] flex flex-col shadow-lg`}>
+      {/* Book Image */}
+      <div className="p-3">
+        <div className="relative mb-3">
+          <img 
+            src={randomImage} 
+            alt={book.title} 
+            className="w-full h-40 object-cover rounded-md shadow-md"
+          />
+        </div>
+      </div>
+      
+      {/* Book Info - White Background */}
+      <div className="bg-white p-4 rounded-b-lg flex-1">
+        <h4 className="font-bold text-sm text-gray-800 leading-tight mb-2">
           {book.title}
         </h4>
         {book.author && (
-          <p className="text-xs text-gray-600 mt-1">{book.author}</p>
+          <p className="text-xs text-gray-600">{book.author}</p>
         )}
       </div>
       
       {/* TOLIQ Badge */}
-      <div className="absolute top-2 right-2">
+      <div className="absolute top-1 right-1">
         <div className="bg-orange-600 text-white px-2 py-1 rounded-md transform rotate-45 text-xs font-bold">
           TOLIQ
         </div>
@@ -272,10 +253,10 @@ const BookCard = ({ book, categoryColor }: { book: Book; categoryColor: string }
 
 const CategorySection = ({ category }: { category: Category }) => {
   return (
-    <div className="mb-8">
-      {/* Category Header */}
-      <div className="flex items-center mb-4">
-        <div className={`${category.bgColor} px-4 py-2 rounded-lg`}>
+    <div className="mb-8 flex gap-4">
+      {/* Category Header - Positioned to the side */}
+      <div className="flex-shrink-0">
+        <div className={`${category.bgColor} px-3 py-8 rounded-lg flex items-center justify-center min-h-[200px]`}>
           <h3 className="font-bold text-lg text-gray-800 transform -rotate-90 origin-center whitespace-nowrap">
             {category.nameUz}
           </h3>
@@ -283,7 +264,7 @@ const CategorySection = ({ category }: { category: Category }) => {
       </div>
       
       {/* Books Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ml-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 flex-1">
         {category.books.map((book) => (
           <BookCard 
             key={book.id} 
